@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <wpa_ctrl.h>
 #include "define_callback_list.h"
+#include "define_timer_function.h"
 
 #ifdef __cplusplus
 #define EXTERNC extern "C" 
@@ -45,6 +46,8 @@ typedef void (*WifiEventReceiver)(enum WifiEventType event_type, const char* raw
 DECLARE_CALLBACK_MAINTAIN_FUNCTIONS(wpa, wifi_event, WifiEventReceiver);
 EXTERNC int wpa_wifi_event_stop();
 EXTERNC int wpa_wifi_event_start();
+DECLARE_TIMER_FUNCTIONS(wpa, wifi_event_handler);
+DECLARE_TIMER_FUNCTIONS(wpa, wifi_event_result_update);
 
 extern int wpa_enable_reset_config_on_init_fail;
 EXTERNC int wpa_run_supplicant();
@@ -75,10 +78,12 @@ EXTERNC int wpa_wifi_info_get_flag();
 EXTERNC int wpa_wifi_get_infos_start(struct wpa_ctrl *handle);
 EXTERNC int wpa_wifi_get_infos_stop();
 EXTERNC void wpa_wifi_info_dump2stdout(WifiAP* data);
+EXTERNC void wpa_wifi_infos_dump2stdout(WifiAP* data, int data_cnt);
 EXTERNC int wpa_wifi_infos_lock();
 EXTERNC int wpa_wifi_infos_get(WifiAP** data, int* data_cnt);
-EXTERNC void wpa_wifi_infos_dump2stdout(WifiAP* data, int data_cnt);
+EXTERNC int wpa_wifi_infos_clear();
 EXTERNC int wpa_wifi_infos_unlock();
+
 
 EXTERNC int wpa_wifi_remove(int network_id);
 EXTERNC int wpa_wifi_add(int *network_id);

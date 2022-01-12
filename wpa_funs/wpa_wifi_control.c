@@ -453,14 +453,15 @@ int wpa_wifi_autoreconnect(int enable) {
 
 void wpa_wifi_status_dump(WiFiStatus* status) {
 	if(status==NULL) return;
-	printf("bssid:\n%s\n"
-	"freq:\n%d\n"
-	"dBm:\n%d\n"
-	"flags:\n%s\n"
-	"ssid:\n%s\n", status->ap.bssid, status->ap.frequency, status->ap.signal_level_dBm, status->ap.flag, status->ap.ssid);
+	printf("[WIFI STATUS]:\n");
+	printf("ssid=%s\n",status->ap.ssid);
+	printf("bssid=%s\n",status->ap.bssid);
 	printf("key_mgmt=%s\n",status->key_mgmt);
 	printf("wpa_state=%s\n",status->wpa_state);
-	printf("link_speed=%d\n",status->linkspeed);
+	printf("freq(MHz)=%d\n",status->ap.frequency);
+	printf("dBm=%d\n",status->ap.signal_level_dBm);
+	printf("link_speed(Mbps)=%d\n",status->linkspeed);
+	printf("flags:\n%s\n", status->ap.flag);
 }
 
 static int _wpa_wifi_status(WiFiStatus* status) {

@@ -24,6 +24,12 @@ int wpa_wifi_info_get_flag() {
 	return flag;
 }
 
+EXTERNC int wpa_wifi_infos_clear(){
+	int ret=0;
+	mdata.clear();
+	return ret;
+}
+
 void wpa_wifi_info_dump2stdout(WifiAP *data) {
 	if (DEBUG) printf("[%s, %d]\n", __FUNCTION__, __LINE__);
 	if (data) {

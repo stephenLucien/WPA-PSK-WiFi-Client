@@ -56,10 +56,10 @@ typedef struct _WifiAP {
 } WifiAP;
 EXTERNC void wpa_wifi_info_dump2stdout(WifiAP* data);
 EXTERNC void wpa_wifi_infos_dump2stdout(WifiAP* data, int data_cnt);
-
 EXTERNC int wpa_wifi_scan();
 EXTERNC int wpa_wifi_infos_lock();
 EXTERNC int wpa_wifi_infos_get(WifiAP** data, int* data_cnt);
+EXTERNC int wpa_wifi_infos_clear();
 EXTERNC int wpa_wifi_infos_unlock();
 
 EXTERNC int wpa_wifi_remove(int network_id);
