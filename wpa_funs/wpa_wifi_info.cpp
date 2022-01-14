@@ -24,7 +24,7 @@ int wpa_wifi_info_get_flag() {
 	return flag;
 }
 
-EXTERNC int wpa_wifi_infos_clear(){
+int wpa_wifi_infos_clear(){
 	int ret=0;
 	mdata.clear();
 	return ret;
