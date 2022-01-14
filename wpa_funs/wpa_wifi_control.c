@@ -490,6 +490,9 @@ void wpa_wifi_status_dump(WiFiStatus* status) {
 	printf("dBm=%d\n",status->ap.signal_level_dBm);
 	printf("link_speed(Mbps)=%d\n",status->linkspeed);
 	printf("flags:\n%s\n", status->ap.flag);
+	printf("WEP:%s\n", wpa_wifi_flag_wep(&status->ap)?"y":"n");
+	printf("WPA:%s\n", wpa_wifi_flag_wpa(&status->ap)?"y":"n");
+	printf("WPA2:%s\n", wpa_wifi_flag_wpa2(&status->ap)?"y":"n");
 }
 
 static int _wpa_wifi_status(WiFiStatus* status) {
@@ -532,6 +535,10 @@ static int _wpa_wifi_status(WiFiStatus* status) {
 				sscanf(buf, "%d", &status->ap.frequency);
 				get_last_appear_value_from_reply_lines(reply, "wpa_state=", "\n",(char*)&status->wpa_state, sizeof(status->wpa_state));
 				get_last_appear_value_from_reply_lines(reply, "key_mgmt=",  "\n",(char*)&status->key_mgmt, sizeof(status->key_mgmt));			
+				get_last_appear_value_from_reply_lines(reply, "pairwise_cipher=",  "\n",(char*)&buf[0], sizeof(buf));
+				for(char *tmpstr=buf;*tmpstr!='\0';tmpstr++){ if(*tmpstr==' ') *tmpstr='+'; }
+				snprintf(status->ap.flag, sizeof(status->ap.flag), "[%s-%s]", status->key_mgmt, buf);			
+
 			}
 		}
 		if (DEBUG) printf("[%s, %d] %s\n", __FUNCTION__, __LINE__, reply);
