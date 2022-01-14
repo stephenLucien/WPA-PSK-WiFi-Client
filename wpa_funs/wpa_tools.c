@@ -77,6 +77,17 @@ static void _locate_last_str_at_lines(char* found_str, void* userdata) {
 	if (DEBUG) printf("\n\n");
 }
 
+
+char* get_substr_locate(const char* reply, const char *substr) {
+	if (reply ==NULL || strlen(reply) == 0 || substr==NULL || strlen(substr) == 0)
+		return NULL;
+	TmpData data = {0};
+	data.begin = (char*)reply;
+	kmp_search((char*)substr, (char*)reply, &_locate_first_str_at_line, &data);
+	return data.pos;
+}
+
+
 int get_first_appear_value_from_reply_line(char* reply, const char* key, const char* terminate_key, char* value_out, size_t value_out_len) {
 	if (DEBUG) printf("[%s, %d]:\n", __FUNCTION__, __LINE__);
 	if (strlen(reply) == 0 || strlen(key) == 0 || value_out_len <= 1)

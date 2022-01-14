@@ -40,6 +40,26 @@ void wpa_wifi_info_dump2stdout(WifiAP *data) {
 	}
 }
 
+int wpa_wifi_flag_wep(WifiAP* data){
+	if(data==NULL) return 0;
+	char *pos = get_substr_locate((const char *)data->flag, "WEP");
+	return pos ? 1:0;
+}
+
+
+int wpa_wifi_flag_wpa(WifiAP* data){
+	if(data==NULL) return 0;
+	char *pos = get_substr_locate((const char *)data->flag, "WPA-PSK");
+	return pos ? 1:0;
+}
+
+
+int wpa_wifi_flag_wpa2(WifiAP* data){
+	if(data==NULL) return 0;
+	char *pos = get_substr_locate((const char *)data->flag, "WPA2-PSK");
+	return pos ? 1:0;
+}
+
 int wpa_wifi_infos_lock() { return pthread_mutex_lock(&mlock); }
 int wpa_wifi_infos_get(WifiAP **data, int *data_cnt) {
 	if (DEBUG) printf("[%s, %d]\n", __FUNCTION__, __LINE__);

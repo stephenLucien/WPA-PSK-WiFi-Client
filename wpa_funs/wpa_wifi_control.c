@@ -355,6 +355,34 @@ int wpa_wifi_set_psk(int network_id, char* psk) {
 	return ret;
 }
 
+
+int wpa_wifi_set_wep_key(int network_id, char* key) {
+	int ret = 0;
+	char cmd[256];
+	char reply[32];
+	size_t reply_len = sizeof(reply) - 1;
+	snprintf(cmd, sizeof(cmd), "SET_NETWORK %d wep_key0 \"%s\"", network_id, key);
+	ret = wpa_ctrl_request(mctrl, cmd, sizeof(cmd), reply, &reply_len, NULL);
+	reply[reply_len] = '\0';
+	if (ret == -1) {
+		// save or recv failed
+		printf("[%s, %d] failed.\n", __FUNCTION__, __LINE__);
+	} else if (ret == -2) {
+		// timeout
+		printf("[%s, %d] timeout.\n", __FUNCTION__, __LINE__);
+	} else if (ret == 0) {
+		// send command success
+		if (!str_match(reply, "OK")) {
+			ret = -3;
+		} else {
+			ret = wpa_wifi_set_key_mgmt(network_id, "NONE");
+		}
+		if (DEBUG) printf("[%s, %d] %s\n", __FUNCTION__, __LINE__, reply);
+	}
+	return ret;
+}
+
+
 int wpa_wifi_set_scan_ssid(int network_id, int enable) {
 	int ret = 0;
 	char cmd[256];

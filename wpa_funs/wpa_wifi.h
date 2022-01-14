@@ -54,8 +54,12 @@ typedef struct _WifiAP {
     int signal_level_dBm;
     int frequency;
 } WifiAP;
+EXTERNC int wpa_wifi_flag_wep(WifiAP* data);
+EXTERNC int wpa_wifi_flag_wpa(WifiAP* data);
+EXTERNC int wpa_wifi_flag_wpa2(WifiAP* data);
 EXTERNC void wpa_wifi_info_dump2stdout(WifiAP* data);
 EXTERNC void wpa_wifi_infos_dump2stdout(WifiAP* data, int data_cnt);
+
 EXTERNC int wpa_wifi_scan();
 EXTERNC int wpa_wifi_infos_lock();
 EXTERNC int wpa_wifi_infos_get(WifiAP** data, int* data_cnt);
@@ -69,6 +73,7 @@ EXTERNC int wpa_wifi_select(int network_id);
 EXTERNC int wpa_wifi_set_ssid(int network_id, char* ssid);
 EXTERNC int wpa_wifi_set_key_mgmt(int network_id, char* key_mgmt);
 EXTERNC int wpa_wifi_set_psk(int network_id, char* psk);
+EXTERNC int wpa_wifi_set_wep_key(int network_id, char* key);
 EXTERNC int wpa_wifi_enable(int network_id);
 EXTERNC int wpa_wifi_disable(int network_id);
 EXTERNC int wpa_wifi_set_scan_ssid(int network_id, int enable); 

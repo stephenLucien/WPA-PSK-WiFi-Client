@@ -4,9 +4,14 @@
 
 #include "wpa_wifi.h"
 
-static char* ssid = "note20";
-static char* psk = "123454323";
+static char ssid[128] = "note20";
+static char psk[32] = "123454323";
+static int is_wep_key = 0;
 static int network_id = 0;
+
+static void help(char* program) {
+	printf("%s <ssid> <passwd> [is_wep:0/1]\n", program);
+}
 
 static void on_scan_results_ready() {
 	WifiAP* mdata;
@@ -32,10 +37,10 @@ static void test_event_results(enum WifiEventType event_type, const char* raw_ms
 		printf("wifi scan finished.\n");
 	} else if (event_type == WIFI_EVENT_SCAN_RESULTS_READY) {
 		printf("wifi scan results ready.\n");
-		if(1) on_scan_results_ready();
+		if (1) on_scan_results_ready();
 	} else if (event_type == WIFI_EVENT_CONNECTED) {
 		printf("wifi connected.\n");
-		if(1) on_wifi_connected();
+		if (1) on_wifi_connected();
 	} else if (event_type == WIFI_EVENT_DISCONNECTED) {
 		printf("wifi disconnected.\n");
 	} else if (event_type == WIFI_EVENT_CONNECTED) {
@@ -45,9 +50,22 @@ static void test_event_results(enum WifiEventType event_type, const char* raw_ms
 	}
 }
 
-int main(int agc, char* argv[]) {
+int main(int argc, char* argv[]) {
 	int ret = 0;
-
+	if(argc<2){
+		help(argv[0]);
+		return ret;
+	} 
+	if(argc>=2){
+		snprintf(ssid, sizeof(ssid), "%s", argv[1]);
+	}
+	if(argc>=3){
+		snprintf(psk, sizeof(psk), "%s", argv[2]);
+	}
+	if(argc>=4){
+		sscanf(argv[3], "%d", &is_wep_key);
+	}	
+	
 	// init event function
 	ret = wpa_wifi_event_start();
 	if (ret) {
@@ -80,7 +98,11 @@ int main(int agc, char* argv[]) {
 	if (ret) {
 	}
 
-	ret = wpa_wifi_set_psk(network_id, psk);
+	if (is_wep_key) {
+		ret = wpa_wifi_set_wep_key(network_id, psk);
+	} else {
+		ret = wpa_wifi_set_psk(network_id, psk);
+	}
 	if (ret) {
 	}
 
